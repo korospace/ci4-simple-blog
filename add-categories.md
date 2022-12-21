@@ -29,6 +29,11 @@
             Insert Into Table
         </a>
     </li>
+    <li>
+        <a href="#validation">
+            Validation
+        </a>
+    </li>
   </ul>
 </details>
 
@@ -39,29 +44,32 @@
     ```
 * define table category
     ```php
-    public function up()
+    class Category extends Migration
     {
-        $this->forge->addField([
-            'id' => [
-                'type'       => 'int',
-                'constraint' => 11,
-                'auto_increment' => true,  
-            ],
-            'name' => [
-                'type'       => 'varchar',
-                'constraint' => 255,
-                'unique'     => true,
-                'null'       => false,
-            ],
-        ]);
+        public function up()
+        {
+            $this->forge->addField([
+                'id' => [
+                    'type'       => 'int',
+                    'constraint' => 11,
+                    'auto_increment' => true,  
+                ],
+                'name' => [
+                    'type'       => 'varchar',
+                    'constraint' => 255,
+                    'unique'     => true,
+                    'null'       => false,
+                ],
+            ]);
 
-        $this->forge->addPrimaryKey('id');
-        $this->forge->createTable('categories');
-    }
+            $this->forge->addPrimaryKey('id');
+            $this->forge->createTable('categories');
+        }
 
-    public function down()
-    {
-        $this->forge->dropTable('categories');
+        public function down()
+        {
+            $this->forge->dropTable('categories');
+        }
     }
     ```
 * run file migration
@@ -117,10 +125,13 @@
 * create function for call your view
 
     ```php
-    // View Add Category
-    public function viewAddCategory()
+    class CategoryController extends BaseController
     {
-        return view('/Category/AddCategory.php');
+        // View Add Category
+        public function viewAddCategory()
+        {
+            return view('/Category/AddCategory.php');
+        }
     }
     ```
 
@@ -167,14 +178,20 @@
 * create function for recive data
 
     ```php
-    // Add Category
-    public function addCategory()
+    class CategoryController extends BaseController
     {
-        $data = [
-            'name' => $this->request->getPost('category_name')
-        ];
+        // View Add Category
+
+        // Add Category
+        public function addCategory()
+        {
+            $data = [
+                'name' => $this->request->getPost('category_name')
+            ];
         
-        dd($data);
+            dd($data);
+        }
+
     }
     ```
 
@@ -199,26 +216,33 @@
 * insert into table
 
     ```php
-    // Add Category
-    public function addCategory()
+    class CategoryController extends BaseController
     {
-        $data = [
-            'name' => $this->request->getPost('category_name')
-        ];
+        // View Add Category
 
-        $category = new Category();
-        $category->save($data);
+        // Add Category
+        public function addCategory()
+        {
+            $data = [
+                'name' => $this->request->getPost('category_name')
+            ];
 
-        session()->setFlashdata(
-            "success", 
-            "Kategori berhasil di tambahkan"
-        );
+            // insert
+            $category = new Category();
+            $category->save($data);
 
-        return redirect()->to(base_url('formaddcategory'));
+            // redirect
+            session()->setFlashdata(
+                "success", 
+                "Kategori berhasil di tambahkan"
+            );
+
+            return redirect()->to(base_url('formaddcategory'));
+        }
     }
     ```
 
-* recive flash data
+* recive flash data at view form category
     ```html
     <?php if (session()->getFlashdata('success')) { ?>
         <div class="alert alert-successs alert-dismissible fade show" role="alert">
@@ -226,4 +250,70 @@
             <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
         </div>
     <? } ?>
+    ```
+
+## Validation
+
+* add validation rules
+    ```php
+    class CategoryController extends BaseController
+    {
+        // View Add Category
+
+        // Add Category
+        public function addCategory()
+        {
+            // validation
+            $rules = [
+                "category_name" => "required|max_length[255]",
+            ];
+
+            if (!$this->validate($rules)) {
+                return view('/Category/FormAddCategory.php', [
+                    "validation" => $this->validator,
+                ]);
+            }
+
+            $data = [
+                'name' => $this->request->getPost('category_name')
+            ];
+
+            // insert
+            $category = new Category();
+            $category->save($data);
+
+            // redirect
+            session()->setFlashdata(
+                "success", 
+                "Kategori berhasil di tambahkan"
+            );
+
+            return redirect()->to(base_url('formaddcategory'));
+        }
+    }
+    ```
+
+* recive validation error
+    ```html
+    <form action="<?= base_url('/addcategory') ?>" method="post" class="row mt-3">
+            
+        <div class="col-5">
+            <div>
+                <label for="category_name" class="form-label">Category Name</label>
+                <input id="category_name" class="form-control" type="text" name="category_name">
+
+                <!-- recive error -->
+                <?php if (isset($validation)) { ?>
+                    <small class="text-danger mt-2">
+                        <?= $validation->getError('category_name') ?>
+                    </small>
+                <?php } ?>
+            </div>
+
+            <button class="btn btn-primary w-100 mt-3">
+                simpan
+            </button>
+        </div>
+
+    </form>
     ```
