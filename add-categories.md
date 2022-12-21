@@ -79,7 +79,7 @@
 
 ## Create Form Insert Category
 
-* create view <b>AddCategory.php</b> at folder <b>app/Views</b>
+* create view <b>AddCategory.php</b> at folder <b>app/Views/Category</b>
 
     ```html
     <!DOCTYPE html>
