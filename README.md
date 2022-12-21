@@ -36,6 +36,6 @@ _NOTE_ : link composer.exe <a href='https://getcomposer.org/doc/00-intro.md#inst
 <details open="open">
   <summary>CRUD CATEGORY</summary>
   <ul>
-    <li><a href="#add-categories.md">ADD CATEGORIES</a></li>
+    <li><a href="add-categories.md">ADD CATEGORIES</a></li>
   </ul>
 </details>
