@@ -1,7 +1,7 @@
 <p align="center">
     <h1 align="center">DELETE CATEGORY</h1>
     <p align="center">
-        <a href="../README.md"><strong>« back to home</strong></a>
+        <a href="README.md"><strong>« back to home</strong></a>
     </p>
     <br />
 </p>
