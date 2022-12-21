@@ -39,5 +39,6 @@ _NOTE_ : link composer.exe <a href='https://getcomposer.org/doc/00-intro.md#inst
     <li><a href="add-categories.md">ADD CATEGORIES</a></li>
     <li><a href="list-categories.md">LIST CATEGORIES</a></li>
     <li><a href="edit-categories.md">EDIT CATEGORIES</a></li>
+    <li><a href="delete-categories.md">DELETE CATEGORIES</a></li>
   </ul>
 </details>
